@@ -1,5 +1,3 @@
-'use strict'
-
 const openModal = () => document.getElementById('modal').classList.add('active')
 const openModal2 = () => document.getElementById('modal2').classList.add('active')
 
@@ -15,6 +13,7 @@ const closeModal = () => {
 const getLocalStorage = () => JSON.parse(localStorage.getItem('db_emprestimo')) ?? []
 const setLocalStorage = (dbEmprestimo) => localStorage.setItem("db_emprestimo", JSON.stringify(dbEmprestimo))
 
+// CRUD - create read update delete
 const deleteEmprestimo = (index) => {
     const dbEmprestimo = readEmprestimo()
     dbEmprestimo.splice(index, 1)
@@ -39,12 +38,14 @@ const isValidFields = () => {
     return document.getElementById('form').reportValidity()
 }
 
+//Interação com o layout
 const clearFields = () => {
     const fields = document.querySelectorAll('.modal-field')
     fields.forEach(field => field.value = "")
     document.getElementById('nome').dataset.index = 'new'
 }
 
+//Campos para serem salvos
 const saveEmprestimo = () => {
     debugger
     if (isValidFields()) {
@@ -55,7 +56,7 @@ const saveEmprestimo = () => {
             livro: document.getElementById('livro').value,
             dtemprestimo: document.getElementById('dtemprestimo').value,
             dtdevolucao: document.getElementById('dtdevolucao').value
-           
+
         }
         const index = document.getElementById('nome').dataset.index
         if (index == 'new') {
@@ -70,6 +71,7 @@ const saveEmprestimo = () => {
     }
 }
 
+//Tabela de Apresentação
 const createRow = (emprestimo, index) => {
     const newRow = document.createElement('tr')
     newRow.innerHTML = `
@@ -98,6 +100,7 @@ const updateTable = () => {
     dbEmprestimo.forEach(createRow)
 }
 
+//Apresentação tabela modal
 const fillFields = (emprestimo) => {
     document.getElementById('codigo').value = emprestimo.codigo
     document.getElementById('tipo').value = emprestimo.tipo
@@ -128,6 +131,7 @@ const editDelete = (event) => {
             avisoDelete.textContent = `Deseja realmente excluir o emprestimo ${emprestimo.nome}`
             openModal2()
 
+        // APAGAR O REGISTRO
             document.getElementById('apagar').addEventListener('click', () => {
                 deleteEmprestimo(index)
                 updateTable()
@@ -139,12 +143,14 @@ const editDelete = (event) => {
 
 updateTable()
 
+// Eventos
 document.getElementById('cadastrarEmprestimo')
     .addEventListener('click', openModal)
 
 document.getElementById('modalClose')
     .addEventListener('click', closeModal)
 
+// modal apagar
 document.getElementById('modalClose2')
     .addEventListener('click', closeModal2)
 
@@ -157,5 +163,6 @@ document.querySelector('#tableEmprestimo>tbody')
 document.getElementById('cancelar')
     .addEventListener('click', closeModal)
 
+// modal apagar
 document.getElementById('cancelar2')
     .addEventListener('click', closeModal2)

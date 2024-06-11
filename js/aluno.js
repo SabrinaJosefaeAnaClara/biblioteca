@@ -1,5 +1,3 @@
-'use strict'
-
 const openModal = () => document.getElementById('modal').classList.add('active')
 const openModal2 = () => document.getElementById('modal2').classList.add('active')
 
@@ -15,6 +13,7 @@ const closeModal = () => {
 const getLocalStorage = () => JSON.parse(localStorage.getItem('db_aluno')) ?? []
 const setLocalStorage = (dbAluno) => localStorage.setItem("db_aluno", JSON.stringify(dbAluno))
 
+// CRUD - create read update delete
 const deleteAluno = (index) => {
     const dbAluno = readAluno()
     dbAluno.splice(index, 1)
@@ -39,12 +38,14 @@ const isValidFields = () => {
     return document.getElementById('form').reportValidity()
 }
 
+//Interação com o layout
 const clearFields = () => {
     const fields = document.querySelectorAll('.modal-field')
     fields.forEach(field => field.value = "")
     document.getElementById('nome').dataset.index = 'new'
 }
 
+//Campos para serem salvos
 const saveAluno = () => {
     debugger
     if (isValidFields()) {
@@ -75,6 +76,7 @@ const saveAluno = () => {
     }
 }
 
+//Tabela de Apresentação
 const createRow = (aluno, index) => {
     const newRow = document.createElement('tr')
     newRow.innerHTML = `
@@ -103,6 +105,7 @@ const updateTable = () => {
     dbAluno.forEach(createRow)
 }
 
+//Apresentação tabela modal
 const fillFields = (aluno) => {
     document.getElementById('nome').value = aluno.nome
     document.getElementById('matricula').value = aluno.matricula
@@ -141,6 +144,7 @@ const editDelete = (event) => {
             avisoDelete.textContent = `Deseja realmente excluir o aluno ${aluno.nome}`
             openModal2()
 
+        // APAGAR O REGISTRO
             document.getElementById('apagar').addEventListener('click', () => {
                 deleteAluno(index)
                 updateTable()
@@ -152,12 +156,14 @@ const editDelete = (event) => {
 
 updateTable()
 
+// Eventos
 document.getElementById('cadastrarAluno')
     .addEventListener('click', openModal)
 
 document.getElementById('modalClose')
     .addEventListener('click', closeModal)
 
+// modal apagar
 document.getElementById('modalClose2')
     .addEventListener('click', closeModal2)
 
@@ -170,5 +176,6 @@ document.querySelector('#tableAluno>tbody')
 document.getElementById('cancelar')
     .addEventListener('click', closeModal)
 
+// modal apagar
 document.getElementById('cancelar2')
     .addEventListener('click', closeModal2)

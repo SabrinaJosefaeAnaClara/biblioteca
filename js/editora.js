@@ -1,5 +1,3 @@
-'use strict'
-
 const openModal = () => document.getElementById('modal').classList.add('active')
 const openModal2 = () => document.getElementById('modal2').classList.add('active')
 
@@ -15,6 +13,7 @@ const closeModal = () => {
 const getLocalStorage = () => JSON.parse(localStorage.getItem('db_editora')) ?? []
 const setLocalStorage = (dbEditora) => localStorage.setItem("db_editora", JSON.stringify(dbEditora))
 
+// CRUD - create read update delete
 const deleteEditora = (index) => {
     const dbEditora = readEditora()
     dbEditora.splice(index, 1)
@@ -39,12 +38,14 @@ const isValidFields = () => {
     return document.getElementById('form').reportValidity()
 }
 
+//Interação com o layout
 const clearFields = () => {
     const fields = document.querySelectorAll('.modal-field')
     fields.forEach(field => field.value = "")
     document.getElementById('nome').dataset.index = 'new'
 }
 
+//Campos para serem salvos
 const saveEditora = () => {
     debugger
     if (isValidFields()) {
@@ -69,6 +70,7 @@ const saveEditora = () => {
     }
 }
 
+//Tabela de Apresentação
 const createRow = (editora, index) => {
     const newRow = document.createElement('tr')
     newRow.innerHTML = `
@@ -96,6 +98,7 @@ const updateTable = () => {
     dbEditora.forEach(createRow)
 }
 
+//Apresentação tabela modal e edição
 const fillFields = (editora) => {
     document.getElementById('nome').value = editora.nome
     document.getElementById('gerente').value = editora.gerente
@@ -127,6 +130,7 @@ const editDelete = (event) => {
             avisoDelete.textContent = `Deseja realmente excluir o editora ${editora.nome}`
             openModal2()
 
+        // APAGAR O REGISTRO
             document.getElementById('apagar').addEventListener('click', () => {
                 deleteEditora(index)
                 updateTable()
@@ -138,12 +142,14 @@ const editDelete = (event) => {
 
 updateTable()
 
+// Eventos
 document.getElementById('cadastrarEditora')
     .addEventListener('click', openModal)
 
 document.getElementById('modalClose')
     .addEventListener('click', closeModal)
 
+// modal apagar
 document.getElementById('modalClose2')
     .addEventListener('click', closeModal2)
 
@@ -156,5 +162,6 @@ document.querySelector('#tableEditora>tbody')
 document.getElementById('cancelar')
     .addEventListener('click', closeModal)
 
+// modal apagar
 document.getElementById('cancelar2')
-    .addEventListener('click', closeModal)
+    .addEventListener('click', closeModal2)
